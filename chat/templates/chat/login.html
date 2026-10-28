@@ -1,0 +1,176 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Login | AI Assistant</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'chat/style.css' %}"
+    >
+
+</head>
+
+
+<body class="auth-page">
+
+
+    <!-- ==========================================
+         AUTHENTICATION CONTAINER
+    =========================================== -->
+
+    <div class="auth-container">
+
+
+        <!-- ==========================================
+             LOGIN CARD
+        =========================================== -->
+
+        <div class="auth-card">
+
+
+            <!-- Logo -->
+
+            <div class="auth-logo">
+
+                <div class="auth-logo-icon">
+                    AI
+                </div>
+
+            </div>
+
+
+            <!-- Heading -->
+
+            <h1>
+                Welcome back
+            </h1>
+
+
+            <p class="auth-subtitle">
+                Login to continue to your AI Assistant
+            </p>
+
+
+            <!-- ==========================================
+                 ERROR / SUCCESS MESSAGES
+            =========================================== -->
+
+            {% if messages %}
+
+                {% for message in messages %}
+
+                    <div class="auth-message">
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+
+            <!-- ==========================================
+                 LOGIN FORM
+            =========================================== -->
+
+            <form
+                method="POST"
+                class="auth-form"
+            >
+
+                {% csrf_token %}
+
+
+                <!-- Username -->
+
+                <div class="auth-field">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Enter your username"
+                        autocomplete="username"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="auth-field">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Login Button -->
+
+                <button
+                    type="submit"
+                    class="auth-button"
+                >
+
+                    Login
+
+                </button>
+
+
+            </form>
+
+
+            <!-- ==========================================
+                 REGISTER LINK
+            =========================================== -->
+
+            <div class="auth-footer">
+
+                <span>
+                    Don't have an account?
+                </span>
+
+                <a href="{% url 'register' %}">
+                    Create an account
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>

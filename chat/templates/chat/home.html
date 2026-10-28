@@ -1,0 +1,733 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>AI Assistant</title>
+
+    <!-- Main CSS -->
+    <link
+        rel="stylesheet"
+        href="{% static 'chat/style.css' %}"
+    >
+
+    <!-- Prism CSS -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ==========================================
+         HOME PAGE
+    =========================================== -->
+    <div class="auth-buttons">
+
+    {% if user.is_authenticated %}
+
+        <span class="user-name">
+            Hi, {{ user.username }}
+        </span>
+
+        <a
+            href="{% url 'logout' %}"
+            class="auth-btn logout-btn"
+        >
+            Logout
+        </a>
+
+    {% else %}
+
+        <a
+            href="{% url 'login' %}"
+            class="auth-btn login-btn"
+        >
+            Login
+        </a>
+
+        <a
+            href="{% url 'register' %}"
+            class="auth-btn register-btn"
+        >
+            Register
+        </a>
+
+    {% endif %}
+
+</div>
+    <main class="home-page">
+
+
+        <!-- BACKGROUND -->
+        <div class="background-glow glow-one"></div>
+        <div class="background-glow glow-two"></div>
+
+
+        <!-- ======================================
+             HERO
+        ======================================= -->
+
+        <section class="hero">
+
+
+            <div class="hero-icon">
+                ✦
+            </div>
+
+
+            <p class="hero-label">
+                <h1>JAAN's AI ASSISTANT</h1>
+            </p>
+
+
+            <h1>
+                Think smarter.
+                <br>
+                <span>Build faster.</span>
+            </h1>
+
+
+            <p class="hero-description">
+
+                Your intelligent AI assistant for
+                programming, learning, ideas,
+                problem solving and much more.
+
+            </p>
+
+
+            <button
+                id="heroChatBtn"
+                class="hero-button"
+                type="button"
+            >
+
+                <span>✦</span>
+
+                Start Chatting
+
+                <span>→</span>
+
+            </button>
+
+
+        </section>
+
+
+
+        <!-- ======================================
+             FEATURES
+        ======================================= -->
+
+        <section class="features">
+
+
+            <!-- FEATURE 1 -->
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    ⚡
+                </div>
+
+                <h3>
+                    Fast
+                </h3>
+
+                <p>
+                    Get quick AI-powered answers.
+                </p>
+
+            </div>
+
+
+            <!-- FEATURE 2 -->
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    💻
+                </div>
+
+                <h3>
+                    Coding
+                </h3>
+
+                <p>
+                    Get help with your programming.
+                </p>
+
+            </div>
+
+
+            <!-- FEATURE 3 -->
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🧠
+                </div>
+
+                <h3>
+                    Intelligent
+                </h3>
+
+                <p>
+                    Ask questions and solve problems.
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- ==========================================
+         FLOATING CHAT BUTTON
+    =========================================== -->
+
+    <button
+        id="chatOpenBtn"
+        class="floating-chat-btn"
+        type="button"
+        aria-label="Open AI Assistant"
+    >
+
+        <span class="chat-icon">
+            ✦
+        </span>
+
+        <span class="chat-btn-text">
+            CHAT
+        </span>
+
+    </button>
+
+
+
+    <!-- ==========================================
+         CHAT WINDOW
+    =========================================== -->
+
+    <section
+        id="chatWindow"
+        class="chat-window"
+        aria-hidden="true"
+    >
+
+
+        <!-- ======================================
+             CHAT SIDEBAR
+        ======================================= -->
+
+        <aside
+            id="chatSidebar"
+            class="chat-sidebar"
+        >
+
+
+            <!-- SIDEBAR HEADER -->
+
+            <div class="sidebar-header">
+
+
+                <div>
+
+                    <h3>
+                        Conversations
+                    </h3>
+
+                    <p>
+                        Your chat history
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="closeSidebarBtn"
+                    class="sidebar-close-btn"
+                    type="button"
+                    title="Close history"
+                >
+                    ×
+                </button>
+
+
+            </div>
+
+
+
+            <!-- ==================================
+                 NEW CHAT
+            =================================== -->
+
+            <button
+                id="newChatBtn"
+                class="new-chat-btn"
+                type="button"
+            >
+
+                <span>
+                    ＋
+                </span>
+
+                New Chat
+
+            </button>
+
+
+
+            <!-- ==================================
+                 CHAT HISTORY
+            =================================== -->
+
+            <div
+                id="chatHistory"
+                class="chat-history"
+            >
+
+                <!--
+                    Conversations will be
+                    inserted here by JavaScript.
+                -->
+
+            </div>
+
+
+        </aside>
+
+
+
+        <!-- ======================================
+             CHAT CONTENT
+        ======================================= -->
+
+        <div class="chat-content">
+
+
+            <!-- ==================================
+                 CHAT HEADER
+            =================================== -->
+
+            <header class="chat-window-header">
+
+
+                <!-- HEADER LEFT -->
+
+                <div class="chat-header-left">
+
+
+                    <div class="chat-ai-avatar">
+                        ✦
+                    </div>
+
+
+                    <div class="chat-header-info">
+
+                        <strong>
+                            AI Assistant
+                        </strong>
+
+
+                        <div class="online-status">
+
+                            <span></span>
+
+                            Online
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ==================================
+                     HEADER ACTIONS
+                =================================== -->
+
+                <div class="chat-header-actions">
+
+
+                    <!-- CHAT HISTORY -->
+
+                    <button
+                        id="historyBtn"
+                        class="chat-header-btn"
+                        type="button"
+                        title="Chat history"
+                    >
+                        ☰
+                    </button>
+
+
+
+                    <!-- REFRESH CHAT -->
+
+                    <button
+                        id="refreshChatBtn"
+                        class="chat-header-btn"
+                        type="button"
+                        title="Refresh chat"
+                    >
+                        ↻
+                    </button>
+
+
+
+                    <!-- CLEAR CHAT -->
+
+                    <button
+                        id="clearChatBtn"
+                        class="chat-header-btn"
+                        type="button"
+                        title="Clear chat"
+                    >
+                        🗑
+                    </button>
+
+
+
+                    <!-- CLOSE CHAT -->
+
+                    <button
+                        id="closeChatBtn"
+                        class="chat-header-btn close-btn"
+                        type="button"
+                        title="Close chat"
+                    >
+                        ×
+                    </button>
+
+
+                </div>
+
+
+            </header>
+
+
+
+            <!-- ==================================
+                 CHAT BODY
+            =================================== -->
+
+            <div
+                id="chatMessages"
+                class="chat-messages"
+            >
+
+
+                <!-- ==================================
+                     WELCOME MESSAGE
+                =================================== -->
+
+                <div
+                    id="welcomeMessage"
+                    class="welcome-message"
+                >
+
+
+                    <div class="welcome-chat-icon">
+                        ✦
+                    </div>
+
+
+                    <h2>
+                        How can I help?
+                    </h2>
+
+
+                    <p>
+                        Ask me anything about coding,
+                        learning, AI or general topics.
+                    </p>
+
+
+
+                    <!-- ==================================
+                         QUICK QUESTIONS
+                    =================================== -->
+
+                    <div class="quick-questions">
+
+
+                        <!-- PYTHON -->
+
+                        <button
+                            class="quick-question"
+                            data-message="Explain Python in simple words"
+                            type="button"
+                        >
+
+                            🐍 Explain Python
+
+                        </button>
+
+
+
+                        <!-- DJANGO -->
+
+                        <button
+                            class="quick-question"
+                            data-message="Help me with Django"
+                            type="button"
+                        >
+
+                            ⚙️ Django Help
+
+                        </button>
+
+
+
+                        <!-- CODING -->
+
+                        <button
+                            class="quick-question"
+                            data-message="Give me Python practice questions"
+                            type="button"
+                        >
+
+                            💻 Practice Coding
+
+                        </button>
+
+
+
+                        <!-- AI -->
+
+                        <button
+                            class="quick-question"
+                            data-message="What is artificial intelligence?"
+                            type="button"
+                        >
+
+                            🤖 Learn AI
+
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ==================================
+                 TYPING INDICATOR
+            =================================== -->
+
+            <div
+                id="typingIndicator"
+                class="typing-indicator"
+            >
+
+
+                <div class="typing-avatar">
+                    ✦
+                </div>
+
+
+                <div class="typing-bubble">
+
+                    <span></span>
+
+                    <span></span>
+
+                    <span></span>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ==================================
+                 INPUT AREA
+            =================================== -->
+
+            <footer class="chat-input-area">
+
+
+                <div class="chat-input-container">
+
+
+                    <!-- MESSAGE INPUT -->
+
+                    <textarea
+                        id="messageInput"
+                        rows="1"
+                        placeholder="Message AI Assistant..."
+                        autocomplete="off"
+                    ></textarea>
+
+
+
+                    <!-- SEND BUTTON -->
+
+                    <button
+                        id="sendBtn"
+                        class="send-btn"
+                        type="button"
+                        title="Send message"
+                    >
+
+
+                        <svg
+                            width="19"
+                            height="19"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                        >
+
+
+                            <path
+                                d="M22 2L11 13"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+
+
+                            <path
+                                d="M22 2L15 22L11 13L2 9L22 2Z"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+
+
+                        </svg>
+
+
+                    </button>
+
+
+                </div>
+
+
+
+                <!-- DISCLAIMER -->
+
+                <p class="chat-disclaimer">
+
+                    AI can make mistakes.
+                    Check important information.
+
+                </p>
+
+
+            </footer>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ==========================================
+         CSRF TOKEN
+    =========================================== -->
+
+    <form style="display: none;">
+
+        {% csrf_token %}
+
+    </form>
+
+
+
+    <!-- ==========================================
+         JAVASCRIPT LIBRARIES
+    =========================================== -->
+
+
+    <!-- MARKED -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
+    ></script>
+
+
+
+    <!-- PRISM -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"
+    ></script>
+
+
+
+    <!-- PRISM PYTHON -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"
+    ></script>
+
+
+
+    <!-- PRISM JAVASCRIPT -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"
+    ></script>
+
+
+
+    <!-- PRISM CSS -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"
+    ></script>
+
+
+
+    <!-- PRISM HTML -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"
+    ></script>
+
+
+
+    <!-- PRISM JSON -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"
+    ></script>
+
+
+
+    <!-- ==========================================
+         YOUR JAVASCRIPT
+    =========================================== -->
+
+    <script src="{% static 'chat/script.js' %}"></script>
+    
+
+
+</body>
+
+</html>
